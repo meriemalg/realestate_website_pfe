@@ -1,0 +1,45 @@
+{% extends 'base.html' %} {% load django_bootstrap5 %} {% block title %}
+s'inscrire {% endblock %} {% block content %}
+<section id="register" class="bg-light py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 mx-auto">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h4><i class="fas fa-user-plus"></i> s'inscrire</h4>
+          </div>
+          <div class="card-body">
+            
+            {% include 'partials/_alerts.html' %}
+            <form action="{% url 'register' %}" method="post">
+              {% csrf_token %} {% bootstrap_form user_form %}
+              
+              <div class="row">
+                <div class="col">
+                  {% bootstrap_button button_type="reset" content="clear" %}
+                </div>
+                <div class="col">
+                  {% bootstrap_button button_type="submit" content="submit" %}
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  document.querySelectorAll(".btn").forEach(function (btn) {
+    btn.classList.add("w-100");
+    if (btn.type == "reset") {
+      btn.classList.remove("btn-primary");
+      btn.classList.add("btn-danger");
+    }
+  });
+  document.querySelectorAll("select").forEach(function (select) {
+    select.classList.add("d-block");
+    select.classList.add("form-control");
+  });
+</script>
+{% endblock %}

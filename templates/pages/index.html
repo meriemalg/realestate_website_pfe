@@ -1,0 +1,305 @@
+ 
+{% extends 'base.html' %} 
+ {% load static %}
+ {% load humanize %}
+ {% block title %} home {% endblock %}
+<!-- Showcase -->
+{% block content %}
+{% include "partials/_alerts.html" %}
+<section id="showcase">
+  <div class="container text-center">
+    <div class="home-search p-5">
+      <div class="overlay p-5">
+        <h1 class="display-4 mb-4">La recherche de propriété est devenue si facile</h1>
+        <p class="lead">
+            Que vous soyez un premier acheteur, que vous cherchiez à agrandir ou à vendre votre maison existante, nos agents sont là pour vous guider à chaque étape
+        </p>
+        <div class="search">
+          <form action='{% url "search" %}' method='post'>
+           {% csrf_token  %}
+            <!-- Form Row 1 -->
+            <div class="form-row">
+              <div class="col-md-4 mb-3">
+                <label class="sr-only">Keywords</label>
+                <input
+                  type="text"
+                  name="keywords"
+                  class="form-control"
+                  placeholder="Keyword (Pool, Garage, etc)"
+                />
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <label class="sr-only">City</label>
+                <input
+                  type="text"
+                  name="city"
+                  class="form-control"
+                  placeholder="City"
+                />
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <label class="sr-only">State</label>
+                <select name="state" class="form-control">
+                  <option selected="true" disabled="disabled">
+                    State (All)
+                  </option>
+                  <option value="adrar">Adrar</option>
+                  <option value="chlef">Chlef</option>
+                  <option value="laghouat">Laghouat</option>
+                  <option value="oum el bouaghi">Oum El Bouaghi</option>
+                  <option value="batna">Batna</option>
+                  <option value="bejaia">Béjaïa</option>
+                  <option value="biskra">Biskra</option>
+                  <option value="bechar">Béchar</option>
+                  <option value="blida">Blida</option>
+                  <option value="bouira">Bouïra</option>
+                  <option value="tamanrasset">Tamanrasset</option>
+                  <option value="tebessa">Tébessa</option>
+                  <option value="tlemcen">Tlemcen</option>
+                  <option value="tiaret">Tiaret</option>
+                  <option value="tizi ouzou">Tizi Ouzou</option>
+                  <option value="alger">Alger</option>
+                  <option value="djelfa">Djelfa</option>
+                  <option value="jijel">Jijel</option>
+                  <option value="setif">Sétif</option>
+                  <option value="saida">Saïda</option>
+                  <option value="skikda">Skikda</option>
+                  <option value="sidi bel abbes">Sidi Bel Abbès</option>
+                  <option value="annaba">Annaba</option>
+                  <option value="guelma">Guelma</option>
+                  <option value="constantine">Constantine</option>
+                  <option value="medea">Médéa</option>
+                  <option value="mostaganem">Mostaganem</option>
+                  <option value="m'sila">M'Sila</option>
+                  <option value="mascara">Mascara</option>
+                  <option value="ouargla">Ouargla</option>
+                  <option value="oran">Oran</option>
+                  <option value="el bayadh">El Bayadh</option>
+                  <option value="illizi">Illizi</option>
+                  <option value="bordj bou arreridj">Bordj Bou Arreridj</option>
+                  <option value="boumerdes">Boumerdès</option>
+                  <option value="el tarf">El Tarf</option>
+                  <option value="tindouf">Tindouf</option>
+                  <option value="tissemsilt">Tissemsilt</option>
+                  <option value="el oued">El Oued</option>
+                  <option value="khenchela">Khenchela</option>
+                  <option value="souk ahras">Souk Ahras</option>
+                  <option value="tipaza">Tipaza</option>
+                  <option value="mila">Mila</option>
+                  <option value="ain defla">Ain Defla</option>
+                  <option value="naama">Naâma</option>
+                  <option value="ain temouchent">Aïn Témouchent</option>
+                  <option value="ghardaia">Ghardaïa</option>
+                  <option value="relizane">Relizane</option>
+
+                </select>
+              </div>
+            </div>
+            <!-- Form Row 2 -->
+            <div class="form-row">
+              <div class="col-md-6 mb-3">
+                <label class="sr-only">chambres</label>
+                <select name="bedrooms" class="form-control">
+                  <option selected="true" disabled="disabled">
+                    chambres (All)
+                  </option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <select name="price" class="form-control" id="type">
+                  <option selected="true" disabled="disabled">
+                    prix max (Any)
+                  </option>
+                  <option value="100000">100,000</option>
+                  <option value="200000">200,000</option>
+                  <option value="300000">300,000</option>
+                  <option value="400000">400,000</option>
+                  <option value="500000">500,000</option>
+                  <option value="600000">600,000</option>
+                  <option value="700000">700,000</option>
+                  <option value="800000">800,000</option>
+                  <option value="900000">900,000</option>
+                  <option value="1000000">1M+</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="col mb-3 ">
+                <select name="transaction_type" id="transaction_type" class="form-control">
+                  <option value="allouer" selected="true" disabled="disabled">type de transaction:</option>
+                  <option value="allouer">allouer</option>
+                  <option value="vendre">vendre</option>
+                </select>
+              </div>            
+            </div>
+            <button class="btn btn-secondary btn-block mt-4" type="submit">
+              Submit form
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- announcements -->
+{% if announcements %}
+<!-- Carousel -->
+<section style="background-color: rgb(28, 28, 45);">
+  <div class="container">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      
+      <!-- Indicators -->
+      <ul class="carousel-indicators">
+        {% for announcement in announcements %}
+          <li data-target="#myCarousel" data-slide-to="{{announcement.id}}" ></li>
+        {% endfor %}
+      </ul>
+        <!-- The slideshow -->
+        <div class="carousel-inner">
+          {% for announcement in announcements %}
+          <div 
+          {% if forloop.first %}
+            class="carousel-item active"
+          {% else %}
+            class="carousel-item"
+          {% endif %}
+          >
+            <img src="{{announcement.image.url}}" alt="Los Angeles" width="1100" height="500">
+            <div
+              class="carousel-caption  d-none d-md-block" style="background-color:rgba(0,0,0, 0.6)"
+            >
+              <h5 class="text-center"> {{announcement.title}} </h5>
+              <p class="text-center"> 
+                {{announcement.description}}
+                <br>  
+                <small> disponible en {{announcement.launching_date}} </small> 
+              </p>
+            </div>        
+          </div>
+          {% endfor %}
+        </div>
+        
+        <!-- Left and right controls -->
+        <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </a>
+      </div>    
+    </div>
+  </section>
+{% endif %}
+
+
+<!-- Listings -->
+<section id="listings" class="py-5">
+  <div class="container">
+    {% if user.is_authenticated %}<h2 class='text-center mb-3 display-4'>bienvenue {{user.username|title}}</h2>{% else %}{% endif %}
+    <h3 class="text-center mb-3">Derniers listes</h3>
+    <div class="row">
+
+        {% for listing in first_three %}
+          <!-- Listing i -->
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card listing-preview">
+            <img class="card-img-top" src='{{listing.main_image.url}}' alt="">
+              <div class="card-img-overlay">
+                <h2>
+                  <span class="badge badge-secondary text-white">prix: {{listing.price}}</span>
+                </h2>
+              </div>
+              <div class="card-body">
+                <div class="listing-heading text-center">
+                  <h4 class="text-primary">{{listing.title}}</h4>
+                  <p>
+                    <i class="fas fa-map-marker text-secondary"></i> addresse : {{listing.city}}</p>
+                </div>
+                <hr>
+                <div class="row py-2 text-secondary">
+                  <div class="col-6">
+                    <i class="fas fa-th-large"></i> surface : {{listing.area}}</div>
+                  <div class="col-6">
+                    <i class="fas fa-car"></i> garage: {{listing.garages}}</div>
+                </div>
+                <div class="row py-2 text-secondary">
+                  <div class="col-6">
+                    <i class="fas fa-bed"></i> chambres: {{listing.bedroooms}}</div>
+                  <div class="col-6">
+                    <i class="fas fa-bath"></i> salles des bains: {{listing.bathrooms}}</div>
+                </div>
+                <hr>
+                <div class="row py-2 text-secondary">
+                  <div class="col-12">
+                      <i class="fas fa-user"></i> agent: {{listing.realtor}}
+                  </div>
+                </div>
+                <div class="row py-2 text-secondary">
+                  <div class="col-7">
+                    <i class="fas fa-tablet"></i> transaction: {{listing.transaction_type}}
+                  </div>
+                </div>
+                <div class="row text-secondary pb-2">
+                  <div class="col-12">
+                    <i class="fas fa-clock"></i> publipostage depuis: {{listing.add_date|timesince}}</div>
+                </div>
+                <hr>
+                <a href='{% url "listing" listing.id %}'class="btn btn-primary btn-block">More Info</a>
+              </div>
+            </div>
+          </div>
+        {% empty %}
+          no listing
+        {% endfor %}
+
+    </div>
+  </div>
+</section>
+<section id="services" class="py-5 bg-secondary text-white">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-4">
+        <i class="fas fa-comment fa-4x mr-4"></i>
+        <hr />
+        <h3>services de consultation</h3>
+        <p>
+          Nos conseillers immobiliers offrent une gamme complète de services, y compris l’analyse de marché, le conseil financier, les stratégies d’investissement,Conseil et développement pour vous guider dans tous vos projets immobiliers
+        </p>
+      </div>
+      <div class="col-md-4">
+        <i class="fas fa-home fa-4x mr-4"></i>
+        <hr />
+        <h3>gestion immobilière</h3>
+        <p>
+          Laissez notre équipe de gestion immobilière dédiée alléger le fardeau de la propriété. Nous gérons efficacement tous les aspects de la gestion de votre immeuble de placement, du contrôle des locataires aux inspections de routine, à l’entretien, à la perception des loyers et aux rapports financiers. Avec le soutien des locataires d’urgence 24/7,
+          nous assurons la tranquillité d’esprit des propriétaires et des locataires.
+        </p>
+      </div>
+      <div class="col-md-4">
+        <i class="fas fa-suitcase fa-4x mr-4"></i>
+        <hr />
+        <h3>Location et vente</h3>
+        <p>
+          Que vous soyez locataire ou vendeur, nous simplifions le processus pour vous. Avec un vaste inventaire d’annonces de location et des services complets aux locataires, trouver votre prochaine maison est facile. Pour les vendeurs, nous fournissons un marketing professionnel, une analyse de marché et une négociation experte, assurant une transaction fluide et réussie. 
+          Faites-nous confiance pour gérer les détails pendant que vous vous concentrez sur vos objectifs immobiliers
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,178 @@
+{% extends 'base.html' %} {% block title %} | tableau de bord utilisateur {% endblock %} 
+{% load humanize %}
+{% block content %}
+<section id="showcase-inner" class="py-5 text-white">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-12">
+        <h1 class="display-4">tableau de bord utilisateur</h1>
+        <p class="lead">Gérer votre compte Harmony Real Estate</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<section id="bc" class="mt-3">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'home' %}"> <i class="fas fa-home"></i> accueille</a>
+        </li>
+        <li class="breadcrumb-item active">tableau de bord</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<!-- Alerts -->
+{% include 'partials/_alerts.html' %}
+
+<section id="dashboard" class="py-2">
+  <div class="container">
+
+    <div class="row mb-3">
+      <div class="col-6 px-2">
+        <a href='{% url "edit_account" %}' class='btn btn-info w-100'>modifier votre compte personnelle</a>
+      </div>
+      <div class="col-6 px-2">
+        <a href='{% url "edit_profile" %}' class='btn btn-info w-100'>modifier votre profile</a>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <h2>bienvenue {{ user.first_name }}</h2>
+        {% if contacts %}
+        <p>Voici les annonces de propriétés que vous avez consulté</p>
+        <div class="table-responsive">
+          <table class="table" >
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">immobilier</th>
+              <th>sujet</th>
+              <th>afficher</th>
+              <th>voir plus</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for contact in contacts %}
+            <tr>
+              <td>{{ contact.id }}</td>
+              <td>{{ contact.real_state }}</td>
+              <td>{{ contact.title }}</td>
+              <td>
+                <a
+                  class="btn btn-light"
+                  href="{% url 'listing' contact.real_state.id %}"
+                  >Voir les fiches</a
+                >
+              </td>
+              <td>
+                <button
+                  class="btn btn-primary"
+                  data-toggle="modal"
+                  data-target="#more-info{{contact.id}}"
+                >
+                  afficher plus
+                </button>
+                <!--more info modal-->
+                <div class="modal fade" id="more-info{{contact.id}}" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="inquiryModalLabel">{{contact.real_state}}</h5>
+                      
+                        <button type="button" class="close" data-dismiss="modal">
+                          <span>&times;</span>
+                        </button>
+
+                      </div>
+                      <div class="modal-body p-3">
+                        <h3 class='text-info'> {{contact.title}} </h3>
+                        <small>
+                          <b>envoyer depuis</b>: <i class='muted'>{{contact.consultation_date|timesince}}</i>
+                        </small>                        
+                        <p class='lead muted'> {{contact.content}} </p>
+
+                        <small>
+                          <b>review status</b>:<br> {% if contact.is_reviewed %}<i>a été examiné dans le {{contact.last_answer}}{% else %} n'est pas examiné</i>{% endif %}
+                        </small>
+                        {% if contact.reponse_status %}
+                          <p class='lead border border-2 p-3'> {{contact.response_content}} </p>
+                        {% endif %}
+                        <a
+                          class="btn btn-light d-block mt-3"
+                          href="{% url 'listing' contact.real_state.id %}#btn-contact-{{contact.real_state.id}}"
+                        >
+                        messager pour plus d'info
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        </div>
+        {% else %}
+        <p>Vous n’avez fait aucune enquête</p>
+        {% endif %}
+
+        <!-- orders -->
+        {% if orders %}
+        <p>Voici les annonces immobilières que vous avez commandées sur</p>
+        <div class="table-responsive">
+          <table class="table" >
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">immobilier</th>
+              <th scope="col">type de transaction</th>
+              <th scope="col">type de contrat</th>
+              {% if order.status == "payee"  %}<th scope="col">date de payement</th>{% else %}<th scope="col">dernier date de payement</th>{% endif %}
+              <th>view</th>
+              <th>delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in orders %}
+            <tr>
+              <td>{{ order.id }}</td>
+              <td>{{ order.listing }}</td>
+              <td>{{ order.transaction_type }}</td>
+              <td>{{ order.status }}</td>
+              {% if order.status == "payee"  %}<td>{{order.purchase_date}}</td>{% else %}<td>{{order.rent_or_installement_payement_date}}</td>{% endif %}
+              <td>
+                <a
+                  class="btn btn-light"
+                  href="{% url 'listing' order.listing.id %}"
+                  >Voir les fiches</a
+                >
+              </td>
+              <td>
+                <a
+                  class="btn btn-danger"
+                  href="{% url 'delete_order' order.id %}"
+                  >Supprimer la commande</a
+                >
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        </div>
+        {% else %}
+        <p>Vous n’avez passé aucune commande</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}

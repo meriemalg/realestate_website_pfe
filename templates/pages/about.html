@@ -1,0 +1,169 @@
+ 
+{% extends 'base.html' %}
+{% load static  %}
+{% load django_bootstrap5  %}
+{% block title %}
+about
+{% endblock %}
+{% block content %}
+
+    <section id="showcase-inner" class="py-5 text-white">
+      <div class="container">
+        <div class="row text-center">  
+          <div class="col-md-12">
+            <h1 class="display-4"> About HOUSE HARMONY </h1>
+            <p class="lead">
+                Nous sommes un service complet de courtage immobilier dédié à aider les propriétaires à acheter et à vendre des propriétés.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <section id="bc" class="mt-3">
+      <div class="container">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href='{%  url "home"%}'> <i class="fas fa-home"></i> accueille</a>
+            </li>
+            <li class="breadcrumb-item active">à propos</li>
+          </ol>
+        </nav>
+      </div>
+    </section>
+
+    <section id="about" class="py-4">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8">
+            <h2>Nous recherchons la maison parfaite</h2>
+            <p class="lead">
+              <b>HOUSE HARMONY</b> a été le nom de confiance en immobilier pour la région d’Anytown. Nous sommes fiers de fournir un service de classe mondiale aux acheteurs et aux vendeurs.
+            </p>
+            <img src='{% static "assets/img/about.jpg" %}'alt=""/>
+            <p class="mt-4">
+              Que vous soyez un premier acheteur, que vous vendiez votre maison familiale de longue date ou que vous cherchiez à acquérir une propriété de placement, notre objectif est de vous guider à chaque étape du processus et de rendre le processus aussi fluide et réussi que possible. »
+            </p>
+
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <img
+                class="card-img-top"
+                src='{{agent_de_mois.profile_image.url}}'
+                alt="Seller of the month"
+              />
+              <div class="card-body">
+                <h5 class="card-title">Vendeur du mois</h5>
+                <h6 class="text-secondary">{{agent_de_mois.owner.username}}</h6>
+                <p class="card-text">
+                  {{agent_de_mois.biographie}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Work -->
+    <section id="work" class="bg-dark text-white text-center">
+      <h2 class="display-4">on travaille pour vous</h2>
+      <h4>
+          Notre équipe d’agents agréés possède une vaste expérience des marchés de l’immobilier résidentiel et commercial.
+      </h4>
+      <hr />
+      <a href="{% url 'listings' %}" class="btn btn-secondary text-white btn-lg"
+        >afficher les fiches des immobiliers</a
+      >
+    </section>
+
+    <!-- Team -->
+    <section id="team" class="py-5">
+      <div class="container">
+        <h2 class="text-center">notre equipe</h2>
+        <div class="row text-center">
+          {% for agent in agents %}
+            <div class="col-md-4">
+            <img
+              src='{{agent.profile_image.url}}'
+              alt=""
+              class="rounded-circle mb-3"
+            />
+            <h4>{{agent.owner.username}}</h4>
+            <p class="text-success">
+              <i class="fas fa-award text-success mb-3"></i> Agent d'immobilier
+            </p>
+            <hr />
+            <p><i class="fas fa-phone"></i> {{agent.phone}}</p>
+            <p><i class="fas fa-envelope-open"></i> {{agent.owner.email}}</p>
+          </div>
+
+          {% empty %}
+            no realtor
+          {% endfor %}
+        
+        </div>
+      </div>
+    </section>
+    <!-- Feedbacks -->
+    <section id="feedbacks" class="py-5">
+      <div class="container">
+        <h2 class="text-center">notre testimonials</h2>
+        {% include "partials/_alerts.html" %}
+        <div class="row text-center">
+          {% for feedback in feedbacks %}
+            <div class="col-md-4">
+            <img
+              src='{{feedback.writer.customerprofile.profile_image.url}}'
+              alt=""
+              class="rounded-circle mb-3"
+            />
+            <h4>{{feedback.writer.username}}</h4>
+            <p class="text-success">
+              <i class="fas fa-award text-success mb-3"></i> Utilisateur
+            </p>
+            <hr />
+            <p class="lead">
+              {{feedback.feedback}}
+            </p>
+            <p><i class="fas fa-envelope-open"></i> {{feedback.writer.email}}</p>
+          </div>
+
+          {% empty %}
+            no feedback
+          {% endfor %}       
+        </div>
+      </div>
+    </section>
+    <section class="container py-3 px-4">
+      {% if user.is_authenticated %}
+        <form action="{% url "about" %}" method="post">
+            {% csrf_token %}
+            {% bootstrap_form feedback_form %}
+
+            <div class="row">
+                <div class="col">{% bootstrap_button button_type="reset" content="clear" %}</div>
+                <div class="col">{% bootstrap_button button_type="submit" content="submit" %}</div>
+            </div>
+        </form>
+
+        <script>
+            document.querySelectorAll("button.btn").forEach(function (btn) {
+                btn.classList.add("w-100");
+                if (btn.type=="reset") {
+                    btn.classList.remove("btn-primary")
+                    btn.classList.add("btn-danger")
+                }
+            })
+            document.querySelectorAll("select").forEach(function (select) {
+                select.classList.add("d-block");
+                select.classList.add("form-control");
+
+            })
+        </script>  
+      {% endif %}
+    </section>
+{% endblock %}

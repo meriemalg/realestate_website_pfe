@@ -1,0 +1,50 @@
+<!-- announcements -->
+{% if announcements %}
+<!-- Carousel -->
+<section style="background-color: rgb(28, 28, 45);">
+  <div class="container">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      
+      <!-- Indicators -->
+      <ul class="carousel-indicators">
+        {% for announcement in announcements %}
+          <li data-target="#myCarousel" data-slide-to="{{announcement.id}}" ></li>
+        {% endfor %}
+      </ul>
+        <!-- The slideshow -->
+        <div class="carousel-inner">
+          {% for announcement in announcements %}
+          <div 
+          {% if forloop.first %}
+            class="carousel-item active"
+          {% else %}
+            class="carousel-item"
+          {% endif %}
+          >
+            <img src="{{announcement.image.url}}" alt="Los Angeles" width="1100" height="500">
+            <div
+              class="carousel-caption  d-none d-md-block" style="background-color:rgba(0,0,0, 0.6)"
+            >
+              <h5 class="text-center"> {{announcement.title}} </h5>
+              <p class="text-center"> 
+                {{announcement.description}}
+                <br>  
+                <small> disponible en {{announcement.launching_date}} </small> 
+              </p>
+            </div>        
+          </div>
+          {% endfor %}
+        </div>
+        
+        <!-- Left and right controls -->
+        <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </a>
+      </div>    
+    </div>
+  </section>
+{% endif %}
+

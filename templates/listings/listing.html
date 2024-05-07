@@ -1,0 +1,485 @@
+{% extends 'base.html' %} 
+{% load humanize %} 
+{% load django_bootstrap5 %} 
+{% block title %} immobilier | {{listing.title }} {% endblock %} 
+{% block content %}
+<section id="showcase-inner" class="py-5 text-white">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-12">
+        <h1 class="display-4">{{ listing.title }}</h1>
+        <p class="lead">
+          <i class="fas fa-map-marker"></i> {{ listing.city }} {{ listing.state }}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<section id="bc" class="mt-3">
+  <div class="container">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'home' %}">accueille</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{% url 'listings' %}">liste des immobilier</a>
+        </li>
+        <li class="breadcrumb-item active">{{ listing.title }}</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<!-- Listing -->
+<section id="listing" class="py-4">
+  <div class="container">
+    <a href="{% url 'listings' %}" class="btn btn-light mb-4"
+      >revenir ver toutes les immobilier</a
+    >
+    <div class="row">
+      <div class="col-md-9">
+        <!-- Home Main Image -->
+        <img
+          src="{{ listing.main_image.url }}"
+          alt=""
+          class="img-main img-fluid mb-3"
+        />
+        <!-- Thumbnails -->
+        <div class="row mb-5 thumbs">
+          {% if listing.slider_image_1 %}
+          <div class="col-md-2">
+            <a
+              href="{{ listing.slider_image_1.url }}"
+              data-lightbox="home-images"
+            >
+              <img
+                src="{{ listing.slider_image_1.url }}"
+                alt=""
+                class="img-fluid"
+              />
+            </a>
+          </div>
+          {% endif %} {% if listing.slider_image_2 %}
+          <div class="col-md-2">
+            <a
+              href="{{ listing.slider_image_2.url }}"
+              data-lightbox="home-images"
+            >
+              <img
+                src="{{ listing.slider_image_2.url }}"
+                alt=""
+                class="img-fluid"
+              />
+            </a>
+          </div>
+          {% endif %} {% if listing.slider_image_3 %}
+          <div class="col-md-2">
+            <a
+              href="{{ listing.slider_image_3.url }}"
+              data-lightbox="home-images"
+            >
+              <img
+                src="{{ listing.slider_image_3.url }}"
+                alt=""
+                class="img-fluid"
+              />
+            </a>
+          </div>
+          {% endif %} {% if listing.slider_image_4 %}
+          <div class="col-md-2">
+            <a
+              href="{{ listing.slider_image_4.url }}"
+              data-lightbox="home-images"
+            >
+              <img
+                src="{{ listing.slider_image_4.url }}"
+                alt=""
+                class="img-fluid"
+              />
+            </a>
+          </div>
+          {% endif %} {% if listing.slider_image_5 %}
+          <div class="col-md-2">
+            <a
+              href="{{ listing.slider_image_5.url }}"
+              data-lightbox="home-images"
+            >
+              <img
+                src="{{ listing.slider_image_5.url }}"
+                alt=""
+                class="img-fluid"
+              />
+            </a>
+          </div>
+          {% endif %} {% if listing.slider_image_6 %}
+          <div class="col-md-2">
+            <a
+              href="{{ listing.slider_image_6.url }}"
+              data-lightbox="home-images"
+            >
+              <img
+                src="{{ listing.slider_image_6.url }}"
+                alt=""
+                class="img-fluid"
+              />
+            </a>
+          </div>
+          {% endif %}
+        </div>
+        <!-- Fields -->
+        <div class="row mb-5 fields">
+          <div class="col-md-6">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item text-secondary">
+                <i class="fas fa-money-bill-alt"></i> prix demandé:
+                <span class="float-right">{{ listing.price | intcomma }}</span>
+              </li>
+              <li class="list-group-item text-secondary">
+                <i class="fas fa-bed"></i> chambres:
+                <span class="float-right">{{ listing.bedrooms }}</span>
+              </li>
+              <li class="list-group-item text-secondary">
+                <i class="fas fa-bath"></i> salles de bains:
+                <span class="float-right">{{ listing.bathrooms }}</span>
+              </li>
+              <li class="list-group-item text-secondary">
+                <i class="fas fa-car"></i> Garage:
+                <span class="float-right">{{ listing.garages }} </span>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item text-secondary">
+                <i class="fas fa-th-large"></i> pieds carrés:
+                <span class="float-right">{{ listing.area }}</span>
+              </li>
+              <li class="list-group-item text-secondary">
+                <i class="fas fa-square"></i> taille de lot:
+                <span class="float-right">{{ listing.lot_size }} Acres </span>
+              </li>
+              <li class="list-group-item text-secondary">
+                <i class="fas fa-calendar"></i> date de publipostage:
+                <span class="float-right"
+                  >{{ listing.add_date|timesince }}</span
+                >
+              </li>
+              <li class="list-group-item text-secondary">
+                <i class="fas fa-bed"></i> agent immobilier:
+                <span class="float-right"
+                  >{{ listing.realtor.owner.username }}
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="row mb-5">
+          <div class="col-md-12">{{ listing.description }}</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card mb-3">
+          <img
+            class="card-img-top"
+            src="{{ listing.realtor.profile_image.url }}"
+            alt=""
+          />
+          <div class="card-body">
+            <h5 class="card-title">Agent Immobilier</h5>
+            <h6 class="text-secondary">{{ listing.realtor }}</h6>
+          </div>
+        </div>
+        <button
+          class="btn-primary btn-block btn-lg"
+          id="btn-contact-{{listing.id}}"
+          data-toggle="modal"
+          data-target="#inquiryModal"
+        >
+          faire une enquête
+        </button>
+        <button
+          class="btn-primary btn-block btn-lg"
+          data-toggle="modal"
+          data-target="#inquiryModal2"
+        >
+          passer commande
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Comment section-->
+<section id="comment-section" class="container px-3 pb-4">
+  <hr>
+  {% include 'partials/_alerts.html' %}
+  <h1 class="text-center">Comment Section</h1>
+  {% with comments.count as total_comments %}
+      <h2 class='headline-alert text-dark'>{{total_comments}} comment{{total_comments|pluralize}} </h2>
+  {% endwith %}
+  {% for comment in comments %}
+  <div class="card my-2 w-75">
+      <div class="card-header bg-transparent">
+          <h4 class='headline-alert text-secondary text-small '>
+              comment {{forloop.counter}}  of {{comments.count}}
+          </h4>
+          <strong>{{ comment.user.username }}</strong>&nbsp;
+          commented&nbsp;
+          {{ comment.updated_at | timesince  }} ago
+      </div>
+      <div class="card-body">
+          <blockquote class="blockquote card-blockquote">
+              <p>&quot;{{ comment.content }}&quot;</p>
+              <footer class="blockquote-footer">Email:
+                  <cite title="Source Title">
+                      {{ comment.user.email }}
+                  </cite>
+              </footer>
+          </blockquote>
+      </div>
+  </div>
+  {% empty %}
+      <p class="text-secondary lead">
+          no comments to be shown
+      </p> 
+  {% endfor %}
+  {% if user.is_authenticated %}
+    <form action="{% url "listing" listing.id %}" method="post">
+        {% csrf_token %}
+        {% bootstrap_form comment_form %}
+
+        <div class="row">
+            <div class="col">{% bootstrap_button button_type="reset" content="clear" %}</div>
+            <div class="col">{% bootstrap_button button_type="submit" content="submit" %}</div>
+        </div>
+    </form>
+
+    <script>
+        document.querySelectorAll(".btn").forEach(function (btn) {
+            btn.classList.add("w-100");
+            if (btn.type=="reset") {
+                btn.classList.remove("btn-primary")
+                btn.classList.add("btn-danger")
+            }
+        })
+        document.querySelectorAll("select").forEach(function (select) {
+            select.classList.add("d-block");
+            select.classList.add("form-control");
+
+        })
+    </script>  
+  {% endif %}
+
+</section>
+
+{% if user.is_authenticated %}
+  
+<!-- Inquiry Modal -->
+<div class="modal fade" id="inquiryModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="inquiryModalLabel">faire une enquête</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'contact' %}" method="POST">
+          {% csrf_token %} {% if user.is_authenticated %}
+          <input type="hidden" name="user_id" value="{{ user.id }}" />
+          {% else %}
+          <input type="hidden" name="user_id" value="0" />
+          {% endif %}
+          <input
+            type="hidden"
+            name="realtor_email"
+            value="{{ listing.realtor.email }}"
+          />
+          <input type="hidden" name="listing_id" value="{{ listing.id }}" />
+          <div class="form-group">
+            <label for="property_name" class="col-form-label">Property: </label>
+            <input
+              type="text"
+              name="listing"
+              class="form-control"
+              value="{{ listing.title }}"
+            />
+          </div>
+          <div class="form-group">
+            <label for="name" class="col-form-label">Name:</label>
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              {%
+              if
+              user.is_authenticated
+              %}
+              value="{{user.username}}"
+              {%
+              endif
+              %}
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="email" class="col-form-label">Email:</label>
+            <input
+              type="email"
+              name="email"
+              class="form-control"
+              {%
+              if
+              user.is_authenticated
+              %}
+              value="{{ user.email }}"
+              {%
+              endif
+              %}
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="title" class="col-form-label">sujet:</label>
+            <input type="text" name="title" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="message" class="col-form-label">Message:</label>
+            <textarea name="message" class="form-control"></textarea>
+          </div>
+          <hr />
+          <input
+            type="submit"
+            value="Send"
+            class="btn btn-block btn-secondary"
+          />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Order Modal -->
+<div class="modal fade" id="inquiryModal2" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="inquiryModalLabel">faire une commande</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'order' %}" method="POST">
+          {% csrf_token %} {% if user.is_authenticated %}
+          <input type="hidden" name="user_id" value="{{ user.id }}" />
+          {% else %}
+          <input type="hidden" name="user_id" value="0" />
+          {% endif %}
+          <input
+            type="hidden"
+            name="realtor_email"
+            value="{{ listing.realtor.email }}"
+          />
+          <input type="hidden" name="listing_id" value="{{ listing.id }}" />
+          <div class="form-group">
+            <label for="property_name" class="col-form-label">immobilier:</label>
+            <input
+              type="text"
+              name="listing"
+              class="form-control"
+              readonly
+              value="{{ listing.title }}"
+            />
+          </div>
+          <div class="form-group">
+            <label for="name" class="col-form-label">nom:</label>
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              {%
+              if
+              user.is_authenticated
+              %}
+              value="{{user.username}}"
+              {%
+              endif
+              %}
+              readonly
+              required
+            />
+          </div>
+          <div class="col mb-3 ">
+            <label for="transaction_type">type de transaction:</label>
+            <select name="transaction_type" id="transaction_type" class="form-control">
+            <option value="allouer">allouer</option>
+            <option value="vendre">vendre</option>
+          </div>
+
+          </select>
+          <div class="form-group">
+            <label for="email" class="col-form-label">Email:</label>
+            <input
+              type="email"
+              name="email"
+              class="form-control"
+              {%
+              if
+              user.is_authenticated
+              %}
+              value="{{ user.email }}"
+              {%
+              endif
+              %}
+              required
+            />
+          </div>
+          <hr />
+          <input
+            type="submit"
+            value="envoyer"
+            class="btn btn-block btn-secondary"
+          />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% else %}
+<div class="modal fade " id="inquiryModal2" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content bg-light">
+      <div class="modal-header">
+
+        <h5 class="modal-title text-dark" id="inquiryModalLabel">n'est pas connecter dans le site</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade " id="inquiryModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content bg-light">
+      <div class="modal-header">
+
+        <h5 class="modal-title text-dark" id="inquiryModalLabel">n'est pas connecter dans le site</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endif %}
+
+{% endblock %}

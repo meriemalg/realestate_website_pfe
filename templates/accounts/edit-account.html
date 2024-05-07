@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}Edit Profile{% endblock %}
+{% block content %}
+<div class="container p-3 my-5">
+    <h1 class="text-center">User Infos</h1>
+    <hr>
+    {% include 'partials/_alerts.html' with messages=user_form.errors %}
+    <h2 class="text-center">Account</h2>
+    <form action="{% url 'edit_account' %}" method="post">
+        {% csrf_token %}
+        {% bootstrap_form user_form %}
+
+        <small class="d-block my-2">
+            <a href='{% url "reset_password" %}' class="link-info">changer le mot de passe</a>
+        </small>
+
+        <div class="row">
+            <div class="col">{% bootstrap_button button_type="reset" content="clear" %}</div>
+            <div class="col">{% bootstrap_button button_type="submit" content="submit" %}</div>
+        </div>
+
+    </form>
+
+
+</div>
+<script>
+    document.querySelectorAll(".btn").forEach(function (btn) {
+        btn.classList.add("w-100");
+        if (btn.type=="reset") {
+            btn.classList.remove("btn-primary")
+            btn.classList.add("btn-danger")
+        }
+    })
+    document.querySelectorAll("select").forEach(function (select) {
+        select.classList.add("d-block");
+        select.classList.add("form-control");
+
+    })
+</script>
+{% endblock %}
